@@ -19,7 +19,6 @@ export async function initializeProfileStorage() {
   await initializeRemoteProfile(() => JSON.parse(JSON.stringify(profile)), remote => {
     if (!remote || remote.v !== 1 || !remote.stats) return;
     Object.assign(profile, remote); saveProfile();
-  });
 }
 export const profileSkin = () => skinOf(profile.skin);
 export function setProfileSkin(skin) { profile.skin = skinOf(skin); saveProfile();  }
@@ -39,7 +38,6 @@ export function recordMatch({ faction, won, rank, kills, bossKills, time, runId 
   profile.progress ||= { xp: 0, books: [], title: 'langkhach' };
   profile.progress.xp += 100 + Math.floor((time || 0) / 60) * 10 + (kills || 0) * 25 + (bossKills || 0) * 50 + (won ? 300 : 0);
   saveProfile();
-   });
   return true;
 }
 export function profileLine() {

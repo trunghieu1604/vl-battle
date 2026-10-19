@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#18201a"><meta name="description" content="Võ Lâm Battle — sinh tồn kiếm hiệp trên bản đồ 16 khu cho 100 đấu sĩ, vòng bo 28 phút; nhặt bí kíp, binh khí và trang bị để sống sót.">
+  <title>Võ Lâm Battle</title>
+  <!-- link previews of /play/ (docs/bao-cao/SEO_ANH_CHIA_SE_2026-10-09.md); the public build adds -->
+  <link rel="canonical" href="index.html">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/social/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Võ Lâm Battle">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:title" content="Vào trận Võ Lâm Battle — sinh tồn kiếm hiệp">
+  <meta property="og:description" content="100 hiệp khách tranh đoạt bí kíp, binh khí — chỉ một người đứng cuối cùng. Chơi miễn phí ngay trên trình duyệt, online hoặc offline.">
+  <meta property="og:image" content="assets/game-logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Võ Lâm Battle — game sinh tồn kiếm hiệp: 100 hiệp khách tranh đoạt bí kíp và binh khí">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Vào trận Võ Lâm Battle">
+  <meta name="twitter:description" content="Sinh tồn kiếm hiệp, 100 hiệp khách — chơi miễn phí ngay trên trình duyệt.">
+  <meta name="twitter:image" content="assets/game-logo.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%2318201a'/%3E%3Cpath d='M9 25L24 6L20 17M11 18L18 24' fill='none' stroke='%23d8bd79' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile.css">
+  <link rel="stylesheet" href="bag.css">
+  <link rel="stylesheet" href="training.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="community.css">
+  <link rel="stylesheet" href="layout.css">
+<script>window.__TIEUNGAO_SERVER__={enabled:false};</script></head>
+<body>
+<main id="game" aria-label="Đấu trường kiếm hiệp">
+  <canvas id="world" tabindex="0" aria-label="Bản đồ giang hồ. Nhấp chuột để di chuyển, nhấp đối thủ để tấn công."></canvas>
+  <div class="vignette"></div>
+  <div class="age-notice" role="note"><b>18+</b><span>Trò chơi dành cho người từ 18 tuổi trở lên. Chơi quá 180 phút một ngày sẽ ảnh hưởng xấu đến sức khỏe.</span></div>
+  <header class="topbar">
+    <a class="brand" href="play/" id="home" aria-label="Tạm dừng trận"><img assets/game-logo.png alt="Logo Võ Lâm Battle" style="width:26px;height:26px;border-radius:4px;object-fit:cover;border:1px solid #d4af37;vertical-align:middle;margin-right:6px;"><span>Võ Lâm<small>Battle</small></span></a>
+    <span class="age-chip" role="img" aria-label="Trò chơi dành cho người từ 18 tuổi trở lên. Chơi quá 180 phút một ngày sẽ ảnh hưởng xấu đến sức khỏe." title="Trò chơi dành cho người từ 18 tuổi trở lên. Chơi quá 180 phút một ngày sẽ ảnh hưởng xấu đến sức khỏe.">18+</span>
+    <div class="match-info"><span class="location" id="placeName">TRÀNG AN</span><span class="mode" id="modeLine">Sinh tồn · 100 đấu sĩ · 28 phút</span></div>
+    <div class="top-actions"><button id="sound" class="utility" aria-label="Bật âm thanh">ÂM: TẮT</button><button id="music" class="utility" aria-label="Tắt nhạc nền">NHẠC: BẬT</button><button id="mapBtn" class="utility" aria-label="Bản đồ lớn">M</button><button id="help" class="utility" aria-label="Hướng dẫn">?</button><button id="fullscreen" class="utility" aria-label="Mở toàn màn hình" title="Toàn màn hình">⛶</button><button id="pause" class="utility" aria-label="Tạm dừng">Ⅱ</button></div>
+  </header>
+
+  <section class="player-panel" id="playerPanel" aria-label="Trạng thái nhân vật">
+    <div class="portrait"><canvas id="portrait" width="70" height="84"></canvas></div>
+    <div class="vitals">
+      <div class="player-name"><span id="pname">Lãng khách</span><span id="kills">0 hạ gục</span></div>
+      <div class="bar health"><div id="hpFill"></div><span id="hpText">1000 / 1000</span></div>
+      <div class="bar mana"><div id="mpFill"></div><span id="mpText">100 / 100</span></div>
+      <div class="bar stamina"><div id="stFill"></div><span id="stText">Thể lực 100</span></div>
+      <div class="sub-row"><span id="element" class="element">Hoa Sơn</span><span id="statLine"></span></div>
+      <div class="gear-row" id="gearRow"></div>
+    </div>
+  </section>
+
+  <section class="target-frame" id="targetFrame" hidden aria-live="polite">
+    <div class="t-name" id="tName"></div><div class="t-sub" id="tSub"></div>
+    <div class="bar health"><div id="tHp"></div><span id="tHpText"></span></div>
+  </section>
+
+  <aside class="map-panel"><div class="map-caption"><span id="mapPlace">ĐỊA ĐỒ</span><span id="clock">00:00</span></div><canvas id="minimap" width="188" height="188" aria-label="Bản đồ nhỏ"></canvas><div class="map-footer"><span><b id="alive">100</b> còn lại</span><span id="zoneLabel">Vùng an toàn</span></div></aside>
+  <div class="killfeed" id="killfeed"></div>
+  <div class="chat" id="chat" aria-live="polite"></div>
+  <div id="placeBanner" class="place-banner"><small id="placeGlyph"></small><span id="placeText"></span></div>
+  <div id="zoneWarning" class="zone-warning" hidden>Đang ở ngoài vùng an toàn — mất sinh lực!</div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <section class="intro parchment" id="intro">
+    <div class="eyebrow"><span></span> Võ Lâm Battle</div>
+    <h1>Giang hồ<br> <em>dậy sóng.</em></h1>
+    <p>100 đấu sĩ giữa 16 vùng giang hồ. Nhặt bí kíp, binh khí và trang bị; săn thủ lĩnh, chạy bo và sống sót đến vòng cuối ở phút 28.</p>
+    <div class="avatar-row">
+      <canvas id="avatarPreview" width="170" height="190" aria-label="Xem trước nhân vật"></canvas>
+      <div><div class="avatars" id="avatars" role="radiogroup" aria-label="Chọn nhân vật"></div><div class="avatars skins" id="skins" role="radiogroup" aria-label="Chọn trang phục"></div><p class="faction-desc" id="factionDesc"></p></div>
+    </div>
+    <div class="factions" id="factions" role="radiogroup" aria-label="Chọn môn phái (ngoại hình và binh khí khởi đầu)"></div>
+    <p class="profile-line" id="profileLine"></p>
+    <button id="start" class="primary" disabled>Đang dựng giang hồ…</button>
+    <button id="training" class="training-cta" disabled title="Võ trường nhỏ với mộc nhân: thử bí kíp, binh khí, trang bị trước khi vào sinh tồn. Không ghi thành tích.">LUYỆN TẬP · VÕ TRƯỜNG</button>
+    <div class="intro-guide"><span><kbd>Chuột trái</kbd> Đi / đánh</span><span><kbd>Q E R T</kbd> Võ công</span><span><kbd>Space</kbd> Khinh công</span><span><kbd>F</kbd> Mở hòm</span><span><kbd>B</kbd> Hành trang</span></div>
+    <div class="mobile-intro">Cần điều khiển để đi · Nút ĐÁNH tự nhắm · Nút KHINH để bay</div>
+  </section>
+
+  <section id="lootPrompt" class="loot-prompt" hidden aria-label="Vật phẩm ở gần"><div><small id="lootKind">BÍ KÍP</small><strong id="lootName"></strong><p id="lootDesc"></p></div><div id="replaceButtons"></div></section>
+
+  <footer class="combat-hud" id="combatHud">
+    <div class="weapons" id="weapons"></div>
+    <div class="skills" id="skills"></div>
+    <div class="potions" id="potions"></div>
+    <button class="attack-button" id="deskAttack" type="button" aria-label="Đánh thường: tự chọn đối thủ gần"><b>⚔</b><span>ĐÁNH</span><kbd>J</kbd><small>Tự chọn địch</small></button>
+    <button class="dodge-button" id="dodge" aria-label="Khinh công"><i class="ui-ico" style="background-image:url(data/vltk/ui/khinhcong.webp)"></i><span>KHINH CÔNG</span><kbd>SPACE</kbd><small id="dodgeTime">Sẵn sàng</small></button>
+  </footer>
+  <div class="desktop-hint" id="desktopHint">Nhấp đất để đi <i>·</i> Nhấp địch để đánh <i>·</i> Chuột phải: võ công đang chọn <i>·</i> J: đánh (tự chọn địch gần chuột) <i>·</i> Tab: mục tiêu <i>·</i> F mở hòm <i>·</i> B hành trang <i>·</i> 1 / 2 thuốc <i>·</i> M bản đồ</div>
+  <div class="touch-controls"><div id="joystick" aria-label="Cần điều khiển di chuyển"><span id="stick"></span></div><button id="touchAttack" aria-label="Đánh thường"><i class="ui-ico" style="background-image:url(data/vltk/ui/danh.webp)"></i><span>ĐÁNH</span></button><button id="touchTarget" aria-label="Đổi mục tiêu"><i class="ui-ico" style="background-image:url(data/vltk/ui/muctieu.webp)"></i><span>MỤC TIÊU</span></button><button id="touchUse" aria-label="Mở hòm hoặc đổi đồ" hidden><i class="ui-ico" style="background-image:url(data/vltk/ui/mohom.webp)"></i><span>MỞ</span></button></div>
+
+  <div class="modal-backdrop" id="bigMapWrap" hidden><section class="parchment bigmap"><div class="bigmap-head"><span>ĐỊA ĐỒ GIANG HỒ</span><button id="closeMap" class="utility">Đóng · M</button></div><canvas id="bigMap" width="640" height="640"></canvas></section></div>
+  <div class="modal-backdrop" id="modal" hidden><section class="parchment modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><span class="eyebrow" id="modalEyebrow">GIANG HỒ</span><h2 id="modalTitle"></h2><div id="modalBody"></div><button id="modalAction" class="primary">Tiếp tục</button><button id="modalSecondary" class="secondary" hidden>Trở về</button></section></div>
+  <section id="rotateScreen" class="rotate-screen" hidden role="dialog" aria-modal="true" aria-labelledby="rotateTitle"><div><span class="rotate-icon" aria-hidden="true"></span><h2 id="rotateTitle">Xoay ngang để giao đấu</h2><p>Cầm điện thoại ngang để nhìn rõ bản đồ và điều khiển bằng hai tay. Trận đấu đang chờ bạn.</p><button id="rotateFullscreen" class="primary">Mở toàn màn hình</button><button id="portraitContinue" class="secondary">Tiếp tục màn hình dọc</button></div></section>
+</main>
+<script type="module" src="js/main.js"></script>
+</body></html>

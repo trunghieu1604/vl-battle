@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "Võ Lâm Battle",
+  "short_name": "Võ Lâm Battle",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#151c17",
+  "theme_color": "#18201a",
+  "description": "Game sinh tồn kiếm hiệp: 100 hiệp khách tranh đoạt bí kíp, binh khí — chơi ngay trên trình duyệt.",
+  "icons": [
+    { "src": "assets/social/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/social/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,57 @@
+/* Chế độ luyện tập (võ trường): menu button and the in-game supply panel. Same palette as style.css. */
+.training-cta{width:100%;margin-top:9px;padding:11px;background:linear-gradient(100deg,#1d2a20,#26362a,#1d2a20);border:1px solid #a88c4c99;color:#e6d39e;font-weight:bold;letter-spacing:1.5px;font-size:12.5px;transition:border-color .2s,box-shadow .2s,filter .2s}
+.training-cta:hover:not(:disabled){border-color:#e3c785;box-shadow:0 0 14px #d0b17433;filter:brightness(1.12)}
+.training-cta:disabled{opacity:.5;cursor:default}
+
+/* the arena has no zone or map: the supply panel takes the map's place */
+body.training .map-panel,body.training #mapBtn,body.training .zone-warning{display:none!important}
+body.training .killfeed{top:auto;bottom:150px;right:350px}
+
+.training-panel{position:absolute;right:28px;top:86px;width:318px;max-height:calc(100% - 210px);z-index:5;display:flex;flex-direction:column;padding:12px 12px 10px;color:var(--light);font-size:12px;animation:tpIn .28s ease-out}
+.training-panel[hidden]{display:none}
+@keyframes tpIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.training-panel.folded>:not(.tp-head){display:none}
+.training-panel.folded{max-height:none}
+.tp-head{display:flex;align-items:center;justify-content:space-between;font-weight:bold;letter-spacing:3px;color:var(--gold);padding:0 2px 8px 6px}
+.tp-head .utility{height:26px;min-width:30px}
+.tp-head-actions{display:flex;gap:5px;letter-spacing:0}
+.tp-meter,.tp-head,.tp-tabs,.tp-hint,.tp-foot{flex-shrink:0}
+.tp-meter{font-size:11px;color:#f0d79a;background:#0d140fb0;border:1px solid var(--line);padding:5px 8px;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.tp-tabs{display:flex;gap:4px;margin-bottom:8px}
+.tp-tabbtn{flex:1;padding:6px 0;background:#172019bb;border:1px solid var(--line);color:#c9c2a6;font-size:11.5px;letter-spacing:.5px;transition:background .15s,color .15s}
+.tp-tabbtn:hover{background:#2a3527}
+.tp-tabbtn.active{background:#3a3a24cc;border-color:#d0b174;color:#f3e2ad}
+.tp-body{flex:1;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:#8d794d #0000}
+.tp-tools{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:5px}
+.tp-tools input,.tp-tools #trainingFaction{grid-column:1/-1}
+.tp-tools input,.tp-tools select{background:#0e1511;border:1px solid var(--line);color:var(--light);font:12px var(--serif);padding:6px 7px;min-width:0}
+.tp-tools input:focus,.tp-tools select:focus{outline:1px solid #d0b17488}
+.tp-count{display:block;color:#9fa48f;font-size:10.5px;margin:2px 2px 6px}
+.tp-list{display:flex;flex-direction:column;gap:3px}
+.tp-book{display:flex;align-items:center;gap:8px;text-align:left;padding:4px 6px;background:#141c17cc;border:1px solid #8d794d33;border-left:3px solid var(--tier);color:var(--light);transition:background .15s,transform .15s}
+.tp-book:hover{background:#26311fcc;transform:translateX(-2px)}
+.tp-book:active{transform:scale(.98)}
+.tp-book span{display:flex;flex-direction:column;gap:1px;min-width:0}
+.tp-book b{font-size:12px;color:var(--tier);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tp-book small{font-size:10px;color:#a9ae99}
+.tp-ico{flex:none;width:30px;height:30px;background:#0b110d center/contain no-repeat;border:1px solid var(--tier)}
+.tp-tab{padding-bottom:4px}
+.tp-row{display:flex;align-items:center;gap:4px;margin-bottom:6px;flex-wrap:wrap}
+.tp-label{width:74px;color:#d8cfaa;font-size:11.5px}
+.tp-chip{min-width:34px;padding:5px 6px;background:#141c17cc;border:1px solid var(--tier);color:var(--tier);font-size:11px;font-weight:bold;transition:background .15s,box-shadow .15s}
+.tp-chip:hover{background:#26311fcc;box-shadow:0 0 8px color-mix(in srgb,var(--tier) 40%,transparent)}
+.tp-hint{font-size:10.5px;line-height:1.5;color:#a9ae99;margin:8px 2px 6px}
+.tp-foot{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.tp-foot .utility{height:30px;font-size:11px}
+#trainingLeave{border-color:#c9584a88;color:#f0b4a6}
+
+@media (pointer:coarse),(max-width:900px){
+  .training-panel{top:calc(var(--safe-top,0px) + 50px);right:calc(var(--safe-right,0px) + 10px);width:270px;max-height:calc(var(--viewport-height,100dvh) - var(--safe-top,0px) - var(--safe-bottom,0px) - 60px);padding:9px}
+  .tp-head{font-size:11px;letter-spacing:1px;padding:0 0 6px}
+  .tp-head .utility{height:44px;min-width:44px}
+  .tp-hint{display:none}
+  .tp-foot{display:flex;margin-top:6px}
+  .tp-foot .utility{flex:1;min-width:0;font-size:10px;line-height:1.25;padding:2px 3px}
+  .tp-body{touch-action:pan-y}
+  body.training .killfeed{right:290px;bottom:120px}
+}

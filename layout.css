@@ -1,0 +1,69 @@
+/* Final layout layer: text keeps its natural height; fixed HUD regions stay apart. */
+#game .brand { flex: 0 0 auto; white-space: nowrap; line-height: 1.35; }
+.top-actions { flex: 0 0 auto; align-items: center; }
+.top-actions .utility { flex: 0 0 auto; white-space: nowrap; line-height: 1.35; height: auto; min-height: 40px; }
+.match-info { flex: 1 1 auto; min-width: 0; }
+.mode, .location { line-height: 1.5; }
+.player-name { align-items: baseline; line-height: 1.45; }
+#pname { min-width: 0; overflow-wrap: anywhere; }
+#kills { flex-shrink: 0; white-space: nowrap; }
+.sub-row { flex-wrap: wrap; line-height: 1.5; }
+.map-caption, .map-footer { gap: 8px; line-height: 1.4; }
+#clock { flex-shrink: 0; white-space: nowrap; }
+.modal h2 { line-height: 1.4; overflow-wrap: anywhere; }
+.modal p, .settings-form label, .title-choice { overflow-wrap: anywhere; }
+.result-stats { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; }
+.result-stats > span { min-width: 0; line-height: 1.5; }
+.result-stats b { font-size: clamp(18px,3vw,24px); line-height: 1.5; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.journal-stats { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.journal-stats b { overflow-wrap: anywhere; }
+.community-intro.intro > * { flex-shrink: 0; }
+.community-menu, .save-tools { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.community-menu button, .save-tools .secondary, .import-save { height: auto; line-height: 1.5; white-space: normal; }
+.community-customize, .community-customize .avatar-row > div { min-width: 0; }
+.bag-heading { gap: 12px; min-height: 48px; height: auto; padding-block: 6px; }
+.bag-heading h2 { flex-shrink: 0; line-height: 1.4; }
+.bag-heading > span { min-width: 0; line-height: 1.5; letter-spacing: .04em; }
+.bag-heading button { flex-shrink: 0; min-height: 36px; }
+.bag-character-heading { height: auto; min-height: 25px; }
+.bag-player-name { line-height: 1.5; overflow-wrap: anywhere; }
+.bag-player-sect { line-height: 1.5; }
+.bag-action-name { min-width: 0; line-height: 1.5; overflow-wrap: anywhere; }
+@media (pointer: fine) {
+  body.playing .combat-hud { bottom: 64px; }
+  body.playing .desktop-hint { bottom: 8px; left: 20px; right: 180px; padding: 0; line-height: 1.65; max-height: 48px; }
+  #game .skill { min-height: 88px; height: auto; padding: 19px 5px 17px; gap: 4px; }
+  #game .skill .name { max-height: none; max-width: 100%; font-size: 10px; line-height: 1.45; overflow: visible; overflow-wrap: anywhere; }
+  .combat-hud .dodge-button, .combat-hud .attack-button { height: auto; min-height: 80px; padding-block: 8px; }
+}
+@media (max-width: 1100px) { .match-info .mode { display: none; } }
+@media (max-width: 900px) { .match-info { display: none; } .topbar { gap: 12px; } }
+@media (max-width: 660px) {
+  .top-actions { flex-shrink: 1; }
+  .top-actions .utility { min-height: 44px; }
+  .modal { padding: 20px 18px; }
+  .modal h2 { font-size: 26px; }
+  .result-stats { grid-template-columns: repeat(3,minmax(0,1fr)); row-gap: 16px; }
+  .journal-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 660px) and (pointer: fine) {
+  body.playing .combat-hud { bottom: 48px; }
+  #game .skill { width: 64px; min-height: 92px; }
+  .combat-hud .dodge-button, .combat-hud .attack-button { min-height: 54px; }
+}
+@media (max-height: 500px) { .modal { max-height: calc(100dvh - 24px); } }
+@media (pointer: fine) and (min-width: 661px) {
+  .community-guide { bottom: 190px; }
+}
+@media (max-width: 660px) {
+  body.playing .topbar .brand, body.playing .age-chip { display: none; }
+  body.playing .top-actions { width: 100%; justify-content: space-between; gap: 3px; }
+  body.playing .top-actions .utility { padding-inline: 5px; font-size: 9px; min-width: 36px; }
+}
+@media (max-width: 560px) {
+  .map-footer { flex-wrap: wrap; gap: 2px; }
+  .map-footer > span { white-space: nowrap; }
+}
+@media (max-width: 660px) and (pointer: fine) {
+  .community-guide { top: 190px; left: 14px; transform: none; max-width: calc(100vw - 154px); text-align: left; }
+}

@@ -1,0 +1,183 @@
+/* One viewport with safe-area-aware controls. Shared by browsers and app shells. */
+:root{--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}
+#game{position:fixed;left:var(--viewport-left,0px);top:var(--viewport-top,0px);width:var(--viewport-width,100%);min-height:0;height:var(--viewport-height,100dvh);overscroll-behavior:none}
+.rotate-screen{position:absolute;inset:0;z-index:40;background:#111c17f5;display:grid;place-items:center;padding:28px max(24px,var(--safe-right)) 28px max(24px,var(--safe-left));text-align:center}
+.rotate-screen>div{max-width:340px}.rotate-screen h2{font:25px var(--serif);color:var(--gold)}.rotate-screen p{font-size:15px;line-height:1.6;color:#c2cbb4}.rotate-icon{display:block;width:92px;height:48px;border:3px solid #c8ab70;border-radius:9px;margin:24px auto;transform:rotate(-12deg)}.rotate-screen button{min-height:48px;margin-top:12px}.rotate-screen .secondary{width:100%;padding:12px}
+#fullscreen{font-size:22px;line-height:1;min-width:44px}.tools-links{margin-top:12px;font-size:12px;color:#d0b174}.tools-links summary{cursor:pointer;min-height:36px;padding:8px;text-align:center}.touch-controls button{touch-action:none}
+@media(pointer:coarse){
+  .topbar{padding-left:max(12px,var(--safe-left));padding-right:max(12px,var(--safe-right));padding-top:var(--safe-top)}
+  .utility{min-height:44px;min-width:44px}.intro .avatar,.intro .faction{min-height:44px}.modal-backdrop{padding:calc(var(--safe-top) + 8px) max(12px,var(--safe-right)) calc(var(--safe-bottom) + 8px) max(12px,var(--safe-left))}.modal{max-height:calc(var(--viewport-height,100dvh) - var(--safe-top) - var(--safe-bottom) - 24px);overflow:auto;touch-action:pan-y}
+  .bigmap{width:min(680px,calc(var(--viewport-width,100vw) * .92),calc(var(--viewport-height,100dvh) - 68px));padding:8px}.bigmap-head{letter-spacing:0;gap:12px;margin-bottom:5px}.bigmap-head button{min-width:62px}.map-footer>span:last-child{display:none}
+  #touchTarget{position:absolute;right:104px;bottom:164px;width:52px;height:44px;border:1px solid #cfb678;background:#1c2c20ed;z-index:5;font:10px Arial}
+  #joystick,#touchAttack,#touchUse,#touchTarget{touch-action:none}.combat-hud button{touch-action:none}
+  .topbar .brand small,.match-info{display:none}.topbar .brand{font-size:15px;letter-spacing:1px}.topbar .seal{width:24px;height:30px;line-height:27px;font-size:18px}
+  .top-actions{gap:3px}.top-actions .utility{padding:0 6px;font-size:10px}.top-actions #fullscreen{font-size:20px}.topbar{gap:8px}
+  .loot-prompt{max-height:calc(var(--viewport-height,100dvh) - 130px);overflow:auto;touch-action:pan-y}.loot-prompt button{min-height:44px}
+}
+@media(pointer:coarse) and (orientation:portrait){
+  .topbar .brand{display:none}.top-actions{margin-left:auto;margin-right:auto}.player-panel{top:calc(var(--safe-top) + 70px)}.map-panel{top:calc(var(--safe-top) + 70px)}
+  .combat-hud{bottom:calc(var(--safe-bottom) + 14px);right:max(12px,var(--safe-right))}#joystick{bottom:calc(var(--safe-bottom) + 30px);left:max(16px,var(--safe-left))}#touchAttack{bottom:calc(var(--safe-bottom) + 206px)}#touchTarget{right:100px;bottom:calc(var(--safe-bottom) + 280px)}
+  .intro{max-height:calc(var(--viewport-height,100dvh) - var(--safe-top) - var(--safe-bottom) - 84px);top:calc(var(--safe-top) + 74px);transform:none}.intro .mobile-intro{padding-bottom:12px}
+}
+@media(pointer:coarse) and (orientation:landscape){
+  .topbar{height:calc(var(--safe-top) + 46px)}.topbar .brand{font-size:15px}.topbar .seal{display:none}.top-actions .utility{height:42px}
+  .player-panel{left:calc(var(--safe-left) + 14px);top:calc(var(--safe-top) + 49px);gap:0}.portrait,.gear-row,.sub-row,#kills{display:none}.vitals{width:160px}.player-name{font-size:12px;margin-bottom:2px}.bar{height:12px;margin-top:3px}.stamina{height:8px}
+  .map-panel{top:calc(var(--safe-top) + 49px);right:calc(var(--safe-right) + 12px);width:86px}.map-caption,.map-footer{font-size:8px;padding:3px 4px}.map-footer b{font-size:10px}.map-caption span:first-child{display:none}
+  .target-frame{top:calc(var(--safe-top) + 49px);bottom:auto;width:170px;padding:4px 7px}.t-name{font-size:12px}.t-sub{font-size:9px;margin:2px 0}.zone-warning{top:calc(var(--safe-top) + 108px);font-size:11px}
+  .combat-hud{display:contents}.combat-hud>*{position:absolute;z-index:5}.passives{display:none}
+  .weapons{left:calc(var(--safe-left) + 24px);bottom:calc(var(--safe-bottom) + 148px);gap:6px}.weapon{width:48px;height:44px;min-width:48px;flex:none;justify-content:center;padding:4px}.weapon kbd{display:none}.weapon .glyph{font-size:20px}
+  .skills{right:calc(var(--safe-right) + 12px);bottom:calc(var(--safe-bottom) + 12px);gap:5px}.skill{width:56px;height:58px}.skill .glyph{font-size:21px}.skill .name{font-size:9px;line-height:1.2}.skill .tier{font-size:9px}.skill .wtag{font-size:9px}
+  .potions{left:calc(var(--safe-left) + 157px);bottom:calc(var(--safe-bottom) + 17px);gap:6px}.potion{width:44px;height:44px}
+  .dodge-button{right:calc(var(--safe-right) + 102px);bottom:calc(var(--safe-bottom) + 88px);height:56px;width:62px;font-size:9px}
+  #joystick{left:calc(var(--safe-left) + 24px);bottom:calc(var(--safe-bottom) + 22px);width:112px;height:112px}#stick{left:34px;top:34px;width:42px;height:42px}
+  #touchAttack{right:calc(var(--safe-right) + 18px);bottom:calc(var(--safe-bottom) + 88px);width:72px;height:72px;font-size:13px}
+  #touchTarget{right:calc(var(--safe-right) + 104px);bottom:calc(var(--safe-bottom) + 158px);width:54px;height:44px}
+  #touchUse{right:calc(var(--safe-right) + 178px);bottom:calc(var(--safe-bottom) + 92px);width:48px;height:48px;font-size:11px}
+  .loot-prompt{top:calc(var(--safe-top) + 76px);bottom:auto;width:min(280px,calc(var(--viewport-width,100vw) * .38));max-height:calc(var(--viewport-height,100dvh) - var(--safe-top) - var(--safe-bottom) - 154px)}.place-banner{top:20%}.place-banner small{font-size:20px}.place-banner span{font-size:20px}.toast{top:43%;font-size:12px;max-width:55%;padding:7px 12px}
+  .intro{left:50%;top:calc(var(--safe-top) + 12px);transform:translateX(-50%);width:min(740px,calc(100% - var(--safe-left) - var(--safe-right) - 28px));max-height:calc(var(--viewport-height,100dvh) - var(--safe-top) - var(--safe-bottom) - 24px);padding:16px 20px;display:grid;grid-template-columns:185px 1fr;gap:10px 20px;align-items:start}
+  .intro .eyebrow{grid-column:1/-1;letter-spacing:1px;font-size:9px}.intro h1{grid-column:1;grid-row:2;font-size:28px;margin:0}.intro h1 br{display:none}.intro>p{display:none}.intro .avatar-row{grid-column:1;grid-row:3/6;display:block;margin:0}#avatarPreview{width:90px;height:100px;float:left;margin-right:6px}.avatars{gap:4px}.avatar{font-size:10px;padding:4px}.avatar small{display:none}.faction-desc{font-size:10px!important;line-height:1.4;margin:6px 0!important;clear:both}.skins{clear:both;flex-wrap:nowrap;margin:4px 0 0}.skins .avatar{flex:1;align-items:center}
+  .intro .factions{grid-column:2;grid-row:2/5;max-height:calc(var(--viewport-height,100dvh) - var(--safe-top) - var(--safe-bottom) - 124px);min-height:90px;grid-template-columns:repeat(4,1fr);margin:0;overscroll-behavior:contain}.faction{font-size:10px;min-height:48px}.faction .g{font-size:15px}.faction small{font-size:8px}
+  .intro #start{grid-column:2;grid-row:5;position:static;min-height:44px;padding:11px;font-size:12px}.intro .tools-links{grid-column:1/-1;margin:0}.tools-links summary{min-height:28px;padding:4px}.intro .intro-guide,.intro .mobile-intro{display:none}
+}
+@media(pointer:coarse) and (orientation:landscape) and (max-width:660px){.topbar .brand{font-size:12px}.vitals{width:135px}.skill{width:50px}.potions{left:calc(var(--safe-left) + 147px)}.intro{grid-template-columns:150px 1fr;gap:8px 12px;padding:12px 14px}.intro h1{font-size:23px}.intro .factions{grid-template-columns:repeat(3,1fr)}}
+body:not(.playing) .combat-hud{display:none}
+
+/* Reduced visual viewports still need both hands and all four martial-art slots. */
+@media(pointer:coarse) and (orientation:landscape){
+  html[data-viewport="narrow"] .skill{width:50px}
+  html[data-viewport="narrow"] .intro{grid-template-columns:150px 1fr;gap:8px 12px;padding:12px 14px}
+  html[data-viewport="narrow"] .intro .factions{grid-template-columns:repeat(3,1fr)}
+  html[data-short="true"] .topbar{height:calc(var(--safe-top) + 40px)}
+  html[data-short="true"] .top-actions .utility{height:38px;min-height:38px}
+  html[data-short="true"] .player-panel{top:calc(var(--safe-top) + 43px)}
+  html[data-short="true"] .vitals{width:135px}
+  html[data-short="true"] .bar{height:10px;margin-top:2px}
+  html[data-short="true"] .stamina{height:7px}
+  html[data-short="true"] .map-panel{top:calc(var(--safe-top) + 43px);width:44px}
+  html[data-short="true"] .map-caption,html[data-short="true"] .map-footer{padding:1px;font-size:7px;line-height:10px}
+  html[data-short="true"] .map-footer b{font-size:8px}
+  html[data-short="true"] .target-frame{top:calc(var(--safe-top) + 43px);width:150px}
+  html[data-short="true"] #joystick{width:92px;height:92px;bottom:calc(var(--safe-bottom) + 14px)}
+  html[data-short="true"] #stick{left:25px;top:25px}
+  html[data-short="true"] .weapons{left:calc(var(--safe-left) + 136px);bottom:calc(var(--safe-bottom) + 70px)}
+  html[data-short="true"] .weapon{height:36px;width:44px;min-width:44px}
+  html[data-short="true"] .potions{left:calc(var(--safe-left) + 136px);bottom:calc(var(--safe-bottom) + 12px)}
+  html[data-short="true"] .skill{height:50px}
+  html[data-short="true"] .skills{bottom:calc(var(--safe-bottom) + 8px)}
+  html[data-short="true"] #touchAttack{width:52px;height:52px;bottom:calc(var(--safe-bottom) + 62px)}
+  html[data-short="true"] .dodge-button{width:56px;height:44px;bottom:calc(var(--safe-bottom) + 74px)}
+  html[data-short="true"] #touchTarget{height:38px;bottom:calc(var(--safe-bottom) + 138px)}
+  html[data-short="true"] #touchUse{width:44px;height:44px;bottom:calc(var(--safe-bottom) + 74px)}
+  html[data-short="true"] .intro{padding:8px 12px;gap:6px 12px;top:calc(var(--safe-top) + 6px);max-height:calc(var(--viewport-height) - var(--safe-top) - var(--safe-bottom) - 12px)}
+  html[data-short="true"] .intro h1{font-size:20px}
+  html[data-short="true"] #avatarPreview{width:62px;height:70px}
+  html[data-short="true"] .intro .factions{max-height:calc(var(--viewport-height) - var(--safe-top) - var(--safe-bottom) - 96px)}
+  html[data-short="true"] .intro .tools-links{display:none}
+}
+.rotate-screen{overflow:auto}.modal{max-width:100%}
+
+/* Four arts form one ordered block; medicines have their own adjacent block.
+   Neither group surrounds the other. The left thumb remains for movement. */
+.potion-label,.potion-cooldown{display:none}
+@media(pointer:coarse) and (orientation:landscape){
+  html{--combat-w:240px;--combat-h:210px;--art-size:56px;--attack-size:76px;--leap-size:60px;--leap-right:104px;--move-size:112px;--move-bottom:22px;--left-tools:156px}
+  html[data-short="true"]{--combat-w:208px;--combat-h:190px;--art-size:48px;--attack-size:64px;--leap-size:52px;--leap-right:88px;--move-size:92px;--move-bottom:14px;--left-tools:136px}
+  #joystick,html[data-short="true"] #joystick{left:calc(var(--safe-left) + 24px);bottom:calc(var(--safe-bottom) + var(--move-bottom));width:var(--move-size);height:var(--move-size)}
+  #stick,html[data-short="true"] #stick{left:calc((var(--move-size) - 42px)/2);top:calc((var(--move-size) - 42px)/2)}
+  .skills,html[data-short="true"] .skills{right:calc(var(--safe-right) + 12px);bottom:calc(var(--safe-bottom) + 100px);width:calc(var(--art-size) * 2 + 8px);height:calc(var(--art-size) * 2 + 8px);display:grid;grid-template-columns:repeat(2,var(--art-size));gap:8px;pointer-events:none}
+  .skills .skill,html[data-short="true"] .skills .skill{position:relative;left:auto;top:auto;width:var(--art-size);height:var(--art-size);border-radius:12px;padding:3px;gap:0;pointer-events:auto;overflow:hidden;border-width:2px;background:#152b23ed;box-shadow:inset 0 0 0 2px #070e0bcc}
+  .skills:after,.potions:after{position:absolute;left:0;right:0;top:-18px;content:"VÕ CÔNG";text-align:center;font:9px/14px Arial;letter-spacing:1px;color:#f1ddb4;text-shadow:0 1px 3px #000;pointer-events:none}
+  .potions:after{content:"THUỐC"}
+  .skill:before{border-radius:8px}.skill .glyph.vo{width:28px;height:28px;margin:0;border:0;box-shadow:none;flex:none}
+  .skill .name{font-size:7px;line-height:1.1;max-width:calc(var(--art-size) - 6px);max-height:15px;overflow:hidden}.skill .tier{right:6px;top:3px;font-size:8px}.skill .wtag,.skill kbd{display:none}.skill .cooldown{font-size:22px}
+  #touchAttack,html[data-short="true"] #touchAttack{right:calc(var(--safe-right) + 18px);bottom:calc(var(--safe-bottom) + 14px);width:var(--attack-size);height:var(--attack-size);border-color:#d8bc7b}
+  #touchAttack .ui-ico{width:46px;height:46px}
+  .dodge-button,html[data-short="true"] .dodge-button{right:calc(var(--safe-right) + var(--leap-right));bottom:calc(var(--safe-bottom) + 20px);width:var(--leap-size);height:var(--leap-size);padding:3px;border-radius:50%;border:2px solid #c7b07a;background:#18332bef;gap:0}
+  .dodge-button .ui-ico{width:28px;height:28px}.dodge-button small{font-size:9px;line-height:12px}
+  .potions,html[data-short="true"] .potions{left:auto;right:calc(var(--safe-right) + 40px + var(--art-size) * 2);bottom:calc(var(--safe-bottom) + 100px);gap:8px}
+  .potion,html[data-short="true"] .potion{width:48px;height:48px;min-height:48px;padding:3px;border-radius:9px;gap:0;overflow:hidden}
+  .potion[data-type="hp"]{border:2px solid #b86454}.potion[data-type="mp"]{border:2px solid #577da9}
+  .potion i.ico{width:22px;height:27px}.potion b{position:absolute;right:3px;top:2px;font-size:11px}.potion kbd{display:none}.potion-label{display:block;font-size:9px;line-height:10px}
+  .potion-cooldown:not([hidden]){display:grid;place-items:center;position:absolute;inset:0;background:#08120cbd;font-size:16px;color:#f7e2b4}
+  .weapons,html[data-short="true"] .weapons{left:calc(var(--safe-left) + var(--left-tools));bottom:calc(var(--safe-bottom) + 22px);gap:8px}
+  .weapon,html[data-short="true"] .weapon{width:44px;height:44px;min-width:44px;border-radius:7px;padding:3px}.weapon .name{display:none}
+  #touchTarget,html[data-short="true"] #touchTarget{left:calc(var(--safe-left) + var(--left-tools));right:auto;bottom:calc(var(--safe-bottom) + 80px);width:44px;height:44px;border-radius:50%}
+  #touchUse,html[data-short="true"] #touchUse{left:calc(var(--safe-left) + var(--left-tools) + 58px);right:auto;bottom:calc(var(--safe-bottom) + 80px);width:48px;height:48px}
+  .map-panel{width:64px}
+  body.bag-open .combat-hud,body.bag-open .touch-controls{visibility:hidden}
+}
+/* At 375 px tall the full minimap still shows: use the compact cluster so
+   the upper-right art stays below it rather than underneath its frame. */
+@media(pointer:coarse) and (orientation:landscape) and (max-height:380px){
+  :root{--combat-w:208px;--combat-h:190px;--art-size:48px;--attack-size:64px;--leap-size:52px;--leap-right:88px}
+}
+@media(pointer:coarse) and (orientation:portrait){
+  html{--art-size:56px}
+  .combat-hud{display:contents}.combat-hud>*{position:absolute;z-index:5}
+  .skills{display:grid;grid-template-columns:repeat(2,56px);gap:8px;right:calc(var(--safe-right) + 12px);bottom:calc(var(--safe-bottom) + 104px);width:120px;height:120px}
+  .skills .skill{width:56px;height:56px;border-radius:12px}
+  .potions{left:calc(var(--safe-left) + 16px);right:auto;bottom:calc(var(--safe-bottom) + 160px);gap:8px}
+  .potion{width:48px;height:48px;min-height:48px;border-radius:9px;padding:3px;gap:0}
+  .potion-label{display:block}.potion b{position:absolute;right:3px;top:2px}.potion-cooldown:not([hidden]){position:absolute;inset:0;display:grid;place-items:center;background:#08120cbd}
+  .skills:after,.potions:after{position:absolute;left:0;right:0;top:-18px;text-align:center;font:9px/14px Arial;letter-spacing:1px;color:#f1ddb4;content:"VÕ CÔNG"}.potions:after{content:"THUỐC"}
+  #touchAttack{right:calc(var(--safe-right) + 18px);bottom:calc(var(--safe-bottom) + 14px);width:72px;height:72px}
+  .dodge-button{right:calc(var(--safe-right) + 102px);bottom:calc(var(--safe-bottom) + 20px);width:60px;height:60px;border-radius:50%}
+  #touchTarget{left:calc(var(--safe-left) + 16px);right:auto;bottom:calc(var(--safe-bottom) + 286px);width:52px;height:44px}
+  #touchUse{left:calc(var(--safe-left) + 76px);right:auto;bottom:calc(var(--safe-bottom) + 286px);width:44px;height:44px}
+  .weapons{left:calc(var(--safe-left) + 16px);bottom:calc(var(--safe-bottom) + 226px)}.weapon{width:48px;height:44px;min-width:48px}.weapon .name{display:none}.passives{display:none}
+}
+@media(pointer:coarse){body.bag-open .combat-hud,body.bag-open .touch-controls{visibility:hidden}}
+
+/* VLTK-mobile style hands (user 2026-10-08): the left part of the screen is a floating movement stick; the right thumb
+   has the attack button in the corner, the four arts on a ring around it, khinh công / target on an outer ring and the
+   two medicines along the bottom. Positions come from an angle and a radius around the attack button's centre. */
+@media(pointer:coarse){
+  #moveZone{position:absolute;left:0;bottom:0;z-index:4;touch-action:none;-webkit-tap-highlight-color:transparent}
+  #joystick{pointer-events:none;opacity:.55;transition:opacity .15s}#joystick.active{opacity:1;transition:none}
+}
+@media(pointer:coarse) and (orientation:portrait){#moveZone{width:55%;height:42%}}
+@media(pointer:coarse) and (orientation:landscape){
+  html{--atk:80px;--art:54px;--leap:58px;--small:46px;--med:48px;--gap:20px}
+  html[data-short="true"]{--atk:70px;--art:48px;--leap:52px;--small:44px;--med:44px;--gap:16px}
+  html{--cx:calc(var(--safe-right) + 16px + var(--atk) / 2);--cy:calc(var(--safe-bottom) + 16px + var(--atk) / 2);
+    --r1:calc(var(--atk) / 2 + var(--art) / 2 + var(--gap));--r2:calc(var(--r1) + var(--art) / 2 + var(--leap) / 2 + 4px)}
+  #moveZone{top:calc(var(--safe-top) + 156px);width:42%}
+  html[data-short="true"] #moveZone{top:calc(var(--safe-top) + 140px)}
+  .skills,html[data-short="true"] .skills,.potions,html[data-short="true"] .potions{display:contents}
+  .skills:after,.potions:after{content:none}
+  .skills .skill,html[data-short="true"] .skills .skill,.potions .potion,html[data-short="true"] .potions .potion,
+  #dodge,html[data-short="true"] #dodge,#touchTarget,html[data-short="true"] #touchTarget,#touchUse,html[data-short="true"] #touchUse,
+  #touchAttack,html[data-short="true"] #touchAttack{
+    position:absolute;left:auto;top:auto;z-index:5;width:var(--s);height:var(--s);min-width:0;min-height:0;
+    right:calc(var(--cx) - var(--r) * cos(var(--a)) - var(--s) / 2);bottom:calc(var(--cy) + var(--r) * sin(var(--a)) - var(--s) / 2)}
+  /* round buttons are touched as circles: a tap in a corner of one box goes to its neighbour, not to the box */
+  .skills .skill,.potions .potion,#dodge,#touchTarget,#touchUse,#touchAttack{clip-path:circle(50%)}
+  #touchAttack,html[data-short="true"] #touchAttack{--s:var(--atk);--r:0px;--a:0deg}
+  #touchAttack .ui-ico{width:calc(var(--atk) * .6);height:calc(var(--atk) * .6)}
+  .skills .skill,html[data-short="true"] .skills .skill{--s:var(--art);--r:var(--r1);border-radius:50%;padding:2px}
+  .skills .skill:nth-child(1){--a:196deg}.skills .skill:nth-child(2){--a:156deg}.skills .skill:nth-child(3){--a:116deg}.skills .skill:nth-child(4){--a:76deg}
+  .skills .skill:before{border-radius:50%}.skill .name{display:none}.skill .glyph.vo{width:calc(var(--art) - 16px);height:calc(var(--art) - 16px)}
+  .skills .skill.empty .glyph{font-size:20px}.skill .tier{right:50%;transform:translateX(50%);top:1px;font-size:8px}
+  #dodge,html[data-short="true"] #dodge{--s:var(--leap);--r:var(--r2);--a:170deg;border-radius:50%}
+  #touchTarget,html[data-short="true"] #touchTarget{--s:var(--small);--r:var(--r2);--a:132deg;border-radius:50%}
+  #touchUse,html[data-short="true"] #touchUse{--s:var(--small);--r:var(--r2);--a:100deg;border-radius:50%}
+  .potions .potion,html[data-short="true"] .potions .potion{--s:var(--med);border-radius:50%}
+  /* the two medicines in one row at the right edge just under the minimap (user 2026-10-08); the minimap ends ~150 px
+     from the top (112 px on short screens), so the row is placed from the top, never from the ring */
+  .potions .potion:nth-child(n),html[data-short="true"] .potions .potion:nth-child(n){top:calc(var(--safe-top) + 154px);bottom:auto;left:auto}
+  html[data-short="true"] .potions .potion:nth-child(n){top:calc(var(--safe-top) + 116px)}
+  .potions .potion:nth-child(1),html[data-short="true"] .potions .potion:nth-child(1){right:calc(var(--safe-right) + 14px)}
+  .potions .potion:nth-child(2),html[data-short="true"] .potions .potion:nth-child(2){right:calc(var(--safe-right) + 24px + var(--med))}
+  .potion .potion-label{display:none}.potion b{right:50%;transform:translateX(50%);top:auto;bottom:1px;font-size:10px}
+  /* weapons go under the health bars, out of the movement area */
+  .weapons,html[data-short="true"] .weapons{left:calc(var(--safe-left) + 14px);top:calc(var(--safe-top) + 106px);bottom:auto;gap:6px}
+  html[data-short="true"] .weapons{top:calc(var(--safe-top) + 94px)}
+  .weapon,html[data-short="true"] .weapon{width:44px;height:44px;min-width:44px}
+}
+
+@media(pointer:coarse) and (orientation:landscape){
+  .intro .mode-bar{grid-column:2;grid-row:5;position:static;padding-top:0;background:none}
+  .intro .mode-main #practice{min-height:44px;padding:8px 6px;font-size:12px}.mode-main .primary small{font-size:9px}
+  .intro .mode-bar{display:flex;gap:6px;align-items:stretch}.intro .mode-bar .mode-main{flex:2.4;min-width:0}
+  .intro .mode-bar .training-cta{flex:1;min-width:0;margin:0;min-height:44px;padding:4px;font-size:10px;letter-spacing:.3px;line-height:1.2}
+}

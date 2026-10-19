@@ -65,12 +65,3 @@ export function applyConfig(v = configState.v) {
 export async function refreshConfig() {
   return configState;
 }
-    if (response.status === 200) {
-      const data = await response.json();
-      if (data && typeof data === 'object' && data.v && typeof data.v === 'object') { configState.id = data.id ?? null; configState.v = data.v; configState.etag = response.headers.get('ETag'); }
-    }
-  } catch {} finally { clearTimeout(timer); }
-  // operation settings are read right away (menu banner, maintenance), without touching the match values
-  for (const p of Object.keys(ops)) { const v = configState.v[`ops.${p}`]; ops[p] = fits(v, defaults.get(`ops.${p}`)) ? v : defaults.get(`ops.${p}`); }
-  return configState;
-}

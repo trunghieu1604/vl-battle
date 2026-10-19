@@ -1,6 +1,6 @@
-// Device cache with optional server persistence for anonymous players.
-// Prototype statistics remain client-reported, not authoritative rankings or rewards.
+// Device cache for anonymous players (offline mode).
 import { skinOf } from './data.js';
+
 const KEY = 'tieungao.profile';
 const blank = () => ({ v: 1, skin: null, stats: { matches: 0, wins: 0, top3: 0, kills: 0, bossKills: 0, bestRank: 0, playTime: 0, byFaction: {} } });
 function load() {
@@ -15,13 +15,10 @@ export function saveProfile() {
   try { localStorage.setItem(KEY, JSON.stringify(profile)); }
   catch { window.dispatchEvent(new CustomEvent('profile-storage-error')); }
 }
-export async function initializeProfileStorage() {
-  await initializeRemoteProfile(() => JSON.parse(JSON.stringify(profile)), remote => {
-    if (!remote || remote.v !== 1 || !remote.stats) return;
-    Object.assign(profile, remote); saveProfile();
-}
+export async function initializeProfileStorage() {}
+export const profileStorageStatus = { mode: 'local', pending: 0, unsavedEvents: 0 };
 export const profileSkin = () => skinOf(profile.skin);
-export function setProfileSkin(skin) { profile.skin = skinOf(skin); saveProfile();  }
+export function setProfileSkin(skin) { profile.skin = skinOf(skin); saveProfile(); }
 
 // one finished match: won, final rank, player kills, bosses killed, seconds played
 export function recordMatch({ faction, won, rank, kills, bossKills, time, runId }) {

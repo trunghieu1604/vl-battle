@@ -3,7 +3,7 @@ import { OPEN_FACTIONS, factionById, avatarOf, isOpen, ZONE_PHASES, WEAPON_TYPES
 import { state, setHooks, newMatch, newTraining, update, cast, leap, drink, pickup, autoTarget, canHarm, swapWeapon, startOpen, setAimProvider, slotOptions, held } from './engine.js';
 import { setAnimConfig, setSheets, setPlayerData, preparePlayer, prefetchSheets } from './sprites.js';
 import { profileSkin, setProfileSkin, recordMatch, profileLine, initializeProfileStorage } from './profile.js';
-import { readJson } from './json-data.js';
+import { readJson } from './json-data.js?v=2';
 import { loadImage, pruneArtCache } from './image-loader.js';
 import { generateWorld, prewarm, world, VILLAGE, isWater, enterLayoutWorld, leaveLayoutWorld } from './world.js';
 import { TRAINING_ARENA } from './training-arena.js';
@@ -29,7 +29,6 @@ import { communityNotice } from './community-notice.js';
 import { readMatch, restoreMatch } from './match-save.js';
 
 await initializeProfileStorage();
-initChat({ onTyping: on => { if (on) clearInput(); } });   // world chat for everyone, room chat in online survival; idle without the server API
 void refreshConfig().then(() => { showOps(); if (!starting) menuButtons(); });   // live settings: the menu banner now, the match values at the next start
 const canvas = $('world'), ctx = canvas.getContext('2d');
 const keys = new Set();
@@ -222,8 +221,6 @@ async function toMenu() {
   if (saveRun) state.paused = true;
   openBag(false); openStatus(false);
   if (saveRun) await suspendRun();
-  if (state.replica) { disconnectOnline(); hideLobby(); leaveLayoutWorld(); newMatch(faction, avatarId); state.phase = 'menu'; }
-  setChatRoom(false);
   exitTraining();
   state.phase = 'menu'; state.paused = false; hideModal();
   $('intro').hidden = false; $('bigMapWrap').hidden = true; document.body.classList.remove('playing'); clearInput(); syncDevice();
@@ -232,7 +229,7 @@ function resume() { if (state.phase !== 'playing') return; resetSimulationTime()
 function pause() {
   if (state.phase !== 'playing') return;
   // an online match goes on on the server: no pause, only the way out
-  if (online()) { showModal('GIANG HỒ VẪN ĐANG DIỄN RA', 'Trận online không tạm dừng được.', '<p>Đóng bảng này để quay lại trận, hoặc rời trận.</p>', 'Quay lại trận', hideModal, toMenu); return; }
+  
   if (state.paused) { resume(); return; }
   state.paused = true; resetSimulationTime(); clearInput(); void setForegroundPlay(false);
   if (true) void checkpoint();
@@ -241,7 +238,7 @@ function pause() {
 }
 function help() {
   if (state.phase === 'ended') return;
-  if (state.phase === 'playing' && !online()) { state.paused = true; resetSimulationTime(); clearInput(); void setForegroundPlay(false); }
+  if (state.phase === 'playing') { state.paused = true; resetSimulationTime(); clearInput(); void setForegroundPlay(false); }
   showModal('CẨM NANG LÃNG KHÁCH', 'Nhập môn giang hồ', HELP_HTML, 'Đã hiểu', () => { if (state.phase === 'playing') resume(); else hideModal(); });
 }
 function toggleMap(force) {
@@ -373,7 +370,6 @@ document.addEventListener('keydown', e => {
   const k = e.key.toLowerCase();
   if (e.target instanceof Element && e.target.closest('input, select, textarea')) return;   // typing in the training panel
   // Enter opens the chat (chat.js) unless a button or a dialog has the keyboard
-  if (k === 'enter' && (document.activeElement === document.body || document.activeElement === canvas) && $('modal').hidden && chatKey(e)) { e.preventDefault(); clearInput(); return; }
   if (!$('modal').hidden && k !== 'escape') return;
   if (bagOpen() && k !== 'escape' && k !== 'b') return;
   if ([' ', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'tab'].includes(k) && canControl()) e.preventDefault();
@@ -504,8 +500,7 @@ onTap($('touchTarget'), cycleTarget);
 onTap($('touchUse'), interact);
 
 // ---------- buttons ----------
-$('start').onclick = () => start(canOnline() ? 'online' : 'bots');
-practice.onclick = () => start('bots');
+$('start').onclick = () => start('bots');
 $('training').onclick = startTraining;
 onTap($('dodge'), doLeap);
 // PC: the ĐÁNH button works like holding J (startAttack picks the enemy; the blows go on while it is held)

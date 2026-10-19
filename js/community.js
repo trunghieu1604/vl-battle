@@ -243,7 +243,7 @@ export function mountCommunity(callbacks) {
   const intro = $('intro'); intro.classList.add('community-intro');
   const description = intro.querySelector(':scope > p');
   description.textContent = 'Một mình giữa 100 đấu sĩ. Nhặt bí kíp, tìm trang bị và sống sót. Đóng game rồi tiếp tục bất cứ lúc nào.';
-  description.after(home); home.after(document.querySelector('.mode-bar')); document.querySelector('.mode-bar').after(customize);
+  description.after(home); const mb = document.querySelector('.mode-bar'); if (mb) { home.after(mb); mb.after(customize); } else { home.after(customize); }
   $('start').dataset.communityStart = 'true';
   const build = document.createElement('small'); build.className = 'community-build'; build.textContent = 'COMMUNITY · OFFLINE · 0.1.0'; intro.append(build);
   continueButton = $('continueCommunity'); info = $('communityRunInfo');
